@@ -1,0 +1,40 @@
+name: Refresh market pulse
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub cron is UTC. This runs every 30 minutes on weekdays.
+    - cron: "0,30 6-22 * * 1-5"
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out market-data repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Refresh cached market data
+        env:
+          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+        run: python tools/update_market_pulse.py --output market-pulse.json
+
+      - name: Commit refreshed snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add market-pulse.json
+          if git diff --cached --quiet; then
+            echo "No market-data changes to commit."
+          else
+            git commit -m "Refresh market pulse $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
