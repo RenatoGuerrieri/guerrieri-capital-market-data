@@ -2,7 +2,7 @@
   "schema": 1,
   "source": "Financial Modeling Prep",
   "sourceUrl": "https://site.financialmodelingprep.com/developer/docs/stable/quote",
-  "generatedAt": "2026-06-29T19:17:50Z",
+  "generatedAt": "2026-06-29T19:20:26Z",
   "label": "Market context",
   "notice": "Cached quote snapshot. Delayed data; not investment advice.",
   "instruments": [
@@ -11,36 +11,36 @@
       "label": "S&P 500",
       "type": "Index",
       "decimals": 2,
-      "price": 7434.34,
-      "change": 80.32,
-      "changePercent": 1.09219,
+      "price": 7436.84,
+      "change": 82.82,
+      "changePercent": 1.12619,
       "sourceName": "S&P 500",
       "exchange": "INDEX",
-      "timestamp": 1782760669
+      "timestamp": 1782760824
     },
     {
       "symbol": "^NDX",
       "label": "Nasdaq 100",
       "type": "Index",
       "decimals": 2,
-      "price": 29739.89,
-      "change": 621.652,
-      "changePercent": 2.13492,
+      "price": 29748.35,
+      "change": 630.112,
+      "changePercent": 2.16398,
       "sourceName": "NASDAQ 100",
       "exchange": "INDEX",
-      "timestamp": 1782760670
+      "timestamp": 1782760823
     },
     {
       "symbol": "^RUT",
       "label": "Russell 2000",
       "type": "Index",
       "decimals": 2,
-      "price": 3006.0534,
-      "change": -4.0311,
-      "changePercent": -0.13392,
+      "price": 3006.7019,
+      "change": -3.3826,
+      "changePercent": -0.11238,
       "sourceName": "Russell 2000",
       "exchange": "INDEX",
-      "timestamp": 1782760670
+      "timestamp": 1782760825
     },
     {
       "symbol": "^STOXX50E",
@@ -76,91 +76,91 @@
       "changePercent": 0.30009,
       "sourceName": "EUR/USD",
       "exchange": "FOREX",
-      "timestamp": 1782760651
+      "timestamp": 1782760815
     },
     {
       "symbol": "GBPUSD",
       "label": "GBP/USD",
       "type": "FX",
       "decimals": 4,
-      "price": 1.32566,
-      "change": 0.00696,
-      "changePercent": 0.52779,
+      "price": 1.32572,
+      "change": 0.00702,
+      "changePercent": 0.53234,
       "sourceName": "GBP/USD",
       "exchange": "FOREX",
-      "timestamp": 1782760661
+      "timestamp": 1782760825
     },
     {
       "symbol": "USDJPY",
       "label": "USD/JPY",
       "type": "FX",
       "decimals": 2,
-      "price": 161.954,
-      "change": 0.224,
-      "changePercent": 0.1385,
+      "price": 161.955,
+      "change": 0.225,
+      "changePercent": 0.13912,
       "sourceName": "USD/JPY",
       "exchange": "FOREX",
-      "timestamp": 1782760671
+      "timestamp": 1782760825
     },
     {
       "symbol": "GCUSD",
       "label": "Gold",
       "type": "Commodity",
       "decimals": 2,
-      "price": 4026.0,
-      "change": -70.3,
-      "changePercent": -1.71618,
+      "price": 4026.1,
+      "change": -70.2,
+      "changePercent": -1.71374,
       "sourceName": "Gold Futures",
       "exchange": "COMMODITY",
-      "timestamp": 1782760049
+      "timestamp": 1782760219
     },
     {
       "symbol": "SIUSD",
       "label": "Silver",
       "type": "Commodity",
       "decimals": 2,
-      "price": 58.585,
-      "change": -1.089,
-      "changePercent": -1.82492,
+      "price": 58.565,
+      "change": -1.109,
+      "changePercent": -1.85843,
       "sourceName": "Silver Futures",
       "exchange": "COMMODITY",
-      "timestamp": 1782760067
+      "timestamp": 1782760215
     },
     {
       "symbol": "CLUSD",
       "label": "WTI",
       "type": "Commodity",
       "decimals": 2,
-      "price": 70.49,
-      "change": -1.43,
-      "changePercent": -1.98832,
+      "price": 70.47,
+      "change": 1.24,
+      "changePercent": 1.79113,
       "sourceName": "Crude Oil",
       "exchange": "COMMODITY",
-      "timestamp": 1782760623
+      "timestamp": 1782760825
     },
     {
       "symbol": "BZUSD",
       "label": "Brent",
       "type": "Commodity",
       "decimals": 2,
-      "price": 73.68,
-      "change": -1.58,
-      "changePercent": -2.09939,
+      "price": 73.66,
+      "change": 1.67,
+      "changePercent": 2.31977,
       "sourceName": "Brent Crude Oil",
       "exchange": "COMMODITY",
-      "timestamp": 1782760608
+      "timestamp": 1782760822
     },
     {
       "symbol": "HGUSD",
       "label": "Copper",
       "type": "Commodity",
       "decimals": 4,
-      "price": 6.1732,
-      "change": -0.0338,
-      "changePercent": -0.54455,
+      "price": 6.174,
+      "change": -0.033,
+      "changePercent": -0.53166,
       "sourceName": "Copper",
       "exchange": "COMMODITY",
-      "timestamp": 1782760654
+      "timestamp": 1782760818
     }
   ],
   "errors": []
