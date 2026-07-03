@@ -2,7 +2,7 @@
   "schema": 1,
   "source": "Financial Modeling Prep",
   "sourceUrl": "https://site.financialmodelingprep.com/developer/docs/stable/quote",
-  "generatedAt": "2026-07-03T21:14:40Z",
+  "generatedAt": "2026-07-03T22:35:48Z",
   "label": "Market context",
   "notice": "Cached quote snapshot. Delayed data; not investment advice.",
   "instruments": [
@@ -47,12 +47,12 @@
       "label": "Euro STOXX 50",
       "type": "Index",
       "decimals": 2,
-      "price": 6418.52,
-      "change": 58.05,
-      "changePercent": 0.91267,
+      "price": 6412.68,
+      "change": 52.21,
+      "changePercent": 0.82085,
       "sourceName": "Euro STOXX 50",
       "exchange": "INDEX",
-      "timestamp": 1783091685
+      "timestamp": 1783094400
     },
     {
       "symbol": "^FTSE",
@@ -76,7 +76,7 @@
       "changePercent": 0.03431145,
       "sourceName": "EUR/USD",
       "exchange": "FOREX",
-      "timestamp": 1783113245
+      "timestamp": 1783114145
     },
     {
       "symbol": "GBPUSD",
@@ -88,19 +88,19 @@
       "changePercent": -0.01348789,
       "sourceName": "GBP/USD",
       "exchange": "FOREX",
-      "timestamp": 1783112282
+      "timestamp": 1783113757
     },
     {
       "symbol": "USDJPY",
       "label": "USD/JPY",
       "type": "FX",
       "decimals": 2,
-      "price": 161.337,
-      "change": 0.239,
-      "changePercent": 0.14836,
+      "price": 161.325,
+      "change": 0.227,
+      "changePercent": 0.14091,
       "sourceName": "USD/JPY",
       "exchange": "FOREX",
-      "timestamp": 1783112385
+      "timestamp": 1783113735
     },
     {
       "symbol": "GCUSD",
