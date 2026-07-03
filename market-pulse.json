@@ -2,7 +2,7 @@
   "schema": 1,
   "source": "Financial Modeling Prep",
   "sourceUrl": "https://site.financialmodelingprep.com/developer/docs/stable/quote",
-  "generatedAt": "2026-07-03T19:42:28Z",
+  "generatedAt": "2026-07-03T21:14:40Z",
   "label": "Market context",
   "notice": "Cached quote snapshot. Delayed data; not investment advice.",
   "instruments": [
@@ -71,36 +71,36 @@
       "label": "EUR/USD",
       "type": "FX",
       "decimals": 4,
-      "price": 1.14378,
-      "change": 0.0001386,
-      "changePercent": 0.01211918,
+      "price": 1.14403,
+      "change": 0.0003924,
+      "changePercent": 0.03431145,
       "sourceName": "EUR/USD",
       "exchange": "FOREX",
-      "timestamp": 1783107749
+      "timestamp": 1783113245
     },
     {
       "symbol": "GBPUSD",
       "label": "GBP/USD",
       "type": "FX",
       "decimals": 4,
-      "price": 1.33541,
-      "change": 0.00088,
-      "changePercent": 0.06594082,
+      "price": 1.33435,
+      "change": -0.00018,
+      "changePercent": -0.01348789,
       "sourceName": "GBP/USD",
       "exchange": "FOREX",
-      "timestamp": 1783107747
+      "timestamp": 1783112282
     },
     {
       "symbol": "USDJPY",
       "label": "USD/JPY",
       "type": "FX",
       "decimals": 2,
-      "price": 161.372,
-      "change": 0.274,
-      "changePercent": 0.17008,
+      "price": 161.337,
+      "change": 0.239,
+      "changePercent": 0.14836,
       "sourceName": "USD/JPY",
       "exchange": "FOREX",
-      "timestamp": 1783107749
+      "timestamp": 1783112385
     },
     {
       "symbol": "GCUSD",
@@ -160,7 +160,7 @@
       "changePercent": 0.89155,
       "sourceName": "Copper",
       "exchange": "COMMODITY",
-      "timestamp": 1783097999
+      "timestamp": 1783111563
     }
   ],
   "errors": []
