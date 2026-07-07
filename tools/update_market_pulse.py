@@ -16,6 +16,11 @@ from urllib.request import Request, urlopen
 DEFAULT_ENV_FILE = Path.home() / ".secrets" / "fmp.env"
 DEFAULT_OUTPUT = Path("assets/data/market-pulse.json")
 QUOTE_ENDPOINT = "https://financialmodelingprep.com/stable/quote"
+BATCH_ENDPOINTS = {
+    "Index": "https://financialmodelingprep.com/stable/batch-index-quotes",
+    "FX": "https://financialmodelingprep.com/stable/batch-forex-quotes",
+    "Commodity": "https://financialmodelingprep.com/stable/batch-commodity-quotes",
+}
 USER_AGENT = "Guerrieri-Capital-Market-Pulse/1.0"
 
 INSTRUMENTS = [
@@ -66,11 +71,16 @@ def as_float(value: Any) -> float | None:
         return None
 
 
-def fetch_quote(symbol: str, api_key: str) -> dict[str, Any]:
-    query = urlencode({"symbol": symbol, "apikey": api_key})
-    request = Request(f"{QUOTE_ENDPOINT}?{query}", headers={"User-Agent": USER_AGENT})
+def fetch_json(endpoint: str, api_key: str, params: dict[str, str] | None = None) -> Any:
+    query_params = dict(params or {})
+    query_params["apikey"] = api_key
+    request = Request(f"{endpoint}?{urlencode(query_params)}", headers={"User-Agent": USER_AGENT})
     with urlopen(request, timeout=30) as response:
-        payload = json.loads(response.read().decode("utf-8"))
+        return json.loads(response.read().decode("utf-8"))
+
+
+def fetch_quote(symbol: str, api_key: str) -> dict[str, Any]:
+    payload = fetch_json(QUOTE_ENDPOINT, api_key, {"symbol": symbol})
 
     if not isinstance(payload, list) or not payload:
         raise RuntimeError(f"No quote returned for {symbol}")
@@ -78,17 +88,39 @@ def fetch_quote(symbol: str, api_key: str) -> dict[str, Any]:
     return payload[0]
 
 
+def fetch_quote_batch(instrument_type: str, api_key: str) -> dict[str, dict[str, Any]]:
+    endpoint = BATCH_ENDPOINTS[instrument_type]
+    payload = fetch_json(endpoint, api_key)
+    if not isinstance(payload, list):
+        raise RuntimeError(f"Unexpected {instrument_type} quote payload: {type(payload).__name__}")
+    out: dict[str, dict[str, Any]] = {}
+    for row in payload:
+        if not isinstance(row, dict):
+            continue
+        symbol = str(row.get("symbol") or "").strip()
+        if symbol:
+            out[symbol.upper()] = row
+    return out
+
+
 def build_payload(api_key: str) -> dict[str, Any]:
     generated_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     rows = []
     errors = []
+    quote_lookup: dict[tuple[str, str], dict[str, Any]] = {}
+
+    for instrument_type in sorted({str(config["type"]) for config in INSTRUMENTS}):
+        try:
+            for symbol, quote in fetch_quote_batch(instrument_type, api_key).items():
+                quote_lookup[(instrument_type, symbol)] = quote
+        except Exception as exc:
+            errors.append({"symbol": f"{instrument_type}:batch", "message": str(exc)})
 
     for config in INSTRUMENTS:
         symbol = config["symbol"]
-        try:
-            quote = fetch_quote(symbol, api_key)
-        except Exception as exc:  # Keep the public JSON useful if one instrument is temporarily unavailable.
-            errors.append({"symbol": symbol, "message": str(exc)})
+        quote = quote_lookup.get((str(config["type"]), symbol.upper()))
+        if quote is None:
+            errors.append({"symbol": symbol, "message": "No quote returned by batch endpoint"})
             continue
 
         rows.append(
@@ -128,7 +160,15 @@ def main() -> int:
     args = parser.parse_args()
 
     api_key = api_key_from(args.env_file)
-    payload = build_payload(api_key)
+    try:
+        payload = build_payload(api_key)
+    except RuntimeError as exc:
+        if str(exc) == "No market quotes were retrieved." and args.output.exists():
+            existing = json.loads(args.output.read_text(encoding="utf-8"))
+            if isinstance(existing, dict) and existing.get("instruments"):
+                print(f"No fresh market quotes retrieved; preserving existing {args.output}.")
+                return 0
+        raise
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

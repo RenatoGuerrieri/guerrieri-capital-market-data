@@ -3,8 +3,8 @@ name: Refresh market pulse
 on:
   workflow_dispatch:
   schedule:
-    # GitHub cron is UTC. This runs every 30 minutes on weekdays.
-    - cron: "0,30 6-22 * * 1-5"
+    # GitHub cron is UTC. Keep this light: FMP quota is shared with the local data lake.
+    - cron: "0 6-22/2 * * 1-5"
 
 jobs:
   refresh:
