@@ -65,10 +65,50 @@ def api_key_from(env_file: Path) -> str:
 def as_float(value: Any) -> float | None:
     if value is None:
         return None
+    if isinstance(value, str):
+        value = value.strip().replace("%", "").replace(",", "")
+        if not value:
+            return None
     try:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def first_float(row: dict[str, Any], keys: tuple[str, ...]) -> float | None:
+    for key in keys:
+        value = as_float(row.get(key))
+        if value is not None:
+            return value
+    return None
+
+
+def quote_change_percent(quote: dict[str, Any]) -> float | None:
+    native_percent = first_float(
+        quote,
+        (
+            "changePercentage",
+            "changesPercentage",
+            "changePercent",
+            "percentChange",
+        ),
+    )
+    if native_percent is not None:
+        return round(native_percent, 5)
+
+    price = as_float(quote.get("price"))
+    change = first_float(quote, ("change", "changes", "dayChange"))
+    if price is None or change is None:
+        return None
+
+    previous_price = first_float(quote, ("previousClose", "previous_close", "prevClose"))
+    if previous_price is None:
+        previous_price = price - change
+
+    if not previous_price:
+        return None
+
+    return round((change / previous_price) * 100, 5)
 
 
 def fetch_json(endpoint: str, api_key: str, params: dict[str, str] | None = None) -> Any:
@@ -130,8 +170,8 @@ def build_payload(api_key: str) -> dict[str, Any]:
                 "type": config["type"],
                 "decimals": config["decimals"],
                 "price": as_float(quote.get("price")),
-                "change": as_float(quote.get("change")),
-                "changePercent": as_float(quote.get("changePercentage")),
+                "change": first_float(quote, ("change", "changes", "dayChange")),
+                "changePercent": quote_change_percent(quote),
                 "sourceName": quote.get("name") or config["label"],
                 "exchange": quote.get("exchange"),
                 "timestamp": quote.get("timestamp"),
