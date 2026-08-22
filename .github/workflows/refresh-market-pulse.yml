@@ -2,6 +2,13 @@ name: Refresh market pulse
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/refresh-market-pulse.yml"
+      - "tools/update_market_pulse.py"
+      - "tests/**"
   schedule:
     # GitHub cron is UTC. Keep this light: FMP quota is shared with the local data lake.
     - cron: "0 6-22/2 * * 1-5"
@@ -20,6 +27,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Test market-data updater
+        run: python -m unittest discover -s tests -v
 
       - name: Refresh cached market data
         env:
