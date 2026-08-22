@@ -160,8 +160,11 @@ def build_payload(api_key: str) -> dict[str, Any]:
         symbol = config["symbol"]
         quote = quote_lookup.get((str(config["type"]), symbol.upper()))
         if quote is None:
-            errors.append({"symbol": symbol, "message": "No quote returned by batch endpoint"})
-            continue
+            try:
+                quote = fetch_quote(symbol, api_key)
+            except Exception as exc:
+                errors.append({"symbol": symbol, "message": str(exc)})
+                continue
 
         rows.append(
             {
@@ -178,8 +181,13 @@ def build_payload(api_key: str) -> dict[str, Any]:
             }
         )
 
-    if not rows:
-        raise RuntimeError("No market quotes were retrieved.")
+    if len(rows) != len(INSTRUMENTS):
+        retrieved = {str(row["symbol"]) for row in rows}
+        missing = [str(config["symbol"]) for config in INSTRUMENTS if config["symbol"] not in retrieved]
+        raise RuntimeError(
+            f"Incomplete market quote snapshot: retrieved {len(rows)} of {len(INSTRUMENTS)}; "
+            f"missing {', '.join(missing)}"
+        )
 
     return {
         "schema": 1,
@@ -202,12 +210,8 @@ def main() -> int:
     api_key = api_key_from(args.env_file)
     try:
         payload = build_payload(api_key)
-    except RuntimeError as exc:
-        if str(exc) == "No market quotes were retrieved." and args.output.exists():
-            existing = json.loads(args.output.read_text(encoding="utf-8"))
-            if isinstance(existing, dict) and existing.get("instruments"):
-                print(f"No fresh market quotes retrieved; preserving existing {args.output}.")
-                return 0
+    except RuntimeError:
+        # A scheduled run must fail rather than report success while leaving stale data in place.
         raise
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
