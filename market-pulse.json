@@ -2,7 +2,7 @@
   "schema": 1,
   "source": "Financial Modeling Prep",
   "sourceUrl": "https://site.financialmodelingprep.com/developer/docs/stable/quote",
-  "generatedAt": "2026-10-02T21:46:36Z",
+  "generatedAt": "2026-10-03T00:54:02Z",
   "label": "Market context",
   "notice": "Cached quote snapshot. Delayed data; not investment advice.",
   "instruments": [
@@ -59,9 +59,9 @@
       "label": "FTSE 100",
       "type": "Index",
       "decimals": 2,
-      "price": 10455.36,
-      "change": 27.09,
-      "changePercent": 0.25977,
+      "price": 10461.95,
+      "change": 33.68,
+      "changePercent": 0.32297,
       "sourceName": "FTSE 100",
       "exchange": null,
       "timestamp": null
